@@ -162,4 +162,26 @@ fn main() {
         reduce_pairs(&mut fish);
     }
     println!("Magnitude: {}", to_string(&fish));
+
+    let mut max_mag = 0;
+    for i in 0..input2.len() {
+        for j in 0..input2.len() {
+            if i == j {
+                continue;
+            }
+            let num1 = parse(input2[i]);
+            let num2 = parse(input2[j]);
+            let mut fish = add(&num1, &num2);
+            reduce(&mut fish);
+            while fish.len() > 1 {
+                reduce_pairs(&mut fish);
+            }
+            if let Element::Number(n) = fish[0] {
+                if n > max_mag {
+                    max_mag = n;
+                }
+            }
+        }
+    }
+    println!("part2: {}", max_mag);
 }
