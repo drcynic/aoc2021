@@ -30,6 +30,10 @@ impl Pos {
             z: self.z - other.z,
         }
     }
+
+    pub fn manhattan_distance(&self, other: &Pos) -> i32 {
+        (self.x - other.x).abs() + (self.y - other.y).abs() + (self.z - other.z).abs()
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -59,7 +63,7 @@ struct Scanner {
 }
 
 fn main() {
-    let filename = "input2.txt";
+    let filename = "input1.txt";
     let input_str = fs::read_to_string(filename).unwrap().trim().to_string();
     let scanner_str: Vec<&str> = input_str.split("\n\n").collect();
     let mut scanner: Vec<Scanner> = scanner_str
@@ -84,19 +88,27 @@ fn main() {
 
     let mut scanner0 = scanner.remove(0);
     let target_points = &mut scanner0.beacons;
+    let mut origins = HashSet::new();
     while scanner.len() > 0 {
         for j in 0..scanner.len() {
             let source_points = &scanner[j].beacons;
             if let Some(transform) = find_transform(source_points, target_points) {
-                // println!("transform found, merging beacons");
                 let transformed_points = transform.apply_to_points(&source_points);
                 target_points.extend(transformed_points);
+                origins.insert(transform.apply(&Pos::new(0, 0, 0)));
                 scanner.remove(j);
                 break;
             }
         }
     }
     println!("{} beacons in scanner 0", scanner0.beacons.len());
+
+    let max_dist = origins
+        .iter()
+        .flat_map(|a| origins.iter().map(|b| a.manhattan_distance(b)))
+        .max()
+        .unwrap();
+    println!("Max distance between scanners: {}", max_dist);
 }
 
 // All 24 possible 90-degree rotations
