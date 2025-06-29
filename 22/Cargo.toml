@@ -1,0 +1,18 @@
+[package]
+name = "day22"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bitstream-io = "4.1.0"
+find_all = "2.0.0"
+getch-rs = "0.2.0"
+hex = "0.4.3"
+itertools = "0.13.0"
+memoize = "0.4.2"
+num = "0.4.3"
+num-derive = "0.4"
+num-traits = "0.2"
+petgraph = "0.6.5"
+priority-queue = "2.1.1"
+regex = "1.11.1"
